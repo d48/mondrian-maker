@@ -5,10 +5,10 @@ console.log(canvas)
 
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
-
 context.lineWidth = 10
 
 const rectangles = []
+let splitDirectionVertical = true
 
 canvas.addEventListener('click', onRectangleClick)
 
@@ -56,9 +56,10 @@ function splitRectangleAt(rectangle, position) {
     height: rectangle.height
   })
 
+  splitDirectionVertical = !splitDirectionVertical
+
   drawRectangles()
 }
 
 createRectangle(0, 0, window.innerWidth, window.innerHeight)
-// createRectangle(10, 10, 100, 50)
 drawRectangles()
