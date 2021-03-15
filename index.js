@@ -31,29 +31,40 @@ function drawRectangles() {
 }
 
 function onRectangleClick(event) {
-  // Todo: find index of rectangle clicked
-  const clickedIndex = 0
+  const clickedIndex = rectangles.findIndex(rectangle => {
+    if (
+      event.x > rectangle.x &&
+      event.x < rectangle.x + rectangle.width &&
+      event.y > rectangle.y &&
+      event.y < rectangle.y + rectangle.height
+    ) {
+      return true
+    }
+  })
 
-  const clickedRectangle = rectangles[0]
+  const clickedRectangle = rectangles[clickedIndex]
 
   rectangles.splice(clickedIndex, 1)
 
-  splitRectangleAt(clickedRectangle, {x: event.x - clickedRectangle.x, y: event.y - clickedRectangle.y})
+  splitRectangleAt(clickedRectangle, {
+    x: event.x - clickedRectangle.x, 
+    y: event.y - clickedRectangle.y
+  })
 }
 
 function splitRectangleAt(rectangle, position) {
   rectangles.push({
     x: rectangle.x,
     y: rectangle.y,
-    width: position.x,
-    height: rectangle.height
+    width: splitDirectionVertical ? position.x : rectangle.width,
+    height: splitDirectionVertical ? rectangle.height : position.y
   })
 
   rectangles.push({
-    x: rectangle.x + position.x,
-    y: rectangle.y,
-    width: rectangle.width - position.x,
-    height: rectangle.height
+    x: splitDirectionVertical ? rectangle.x + position.x : rectangle.x,
+    y: splitDirectionVertical ?  rectangle.y : rectangle.y + position.y,
+    width: splitDirectionVertical ? rectangle.width - position.x : rectangle.width,
+    height: splitDirectionVertical ? rectangle.height : rectangle.height - position.y
   })
 
   splitDirectionVertical = !splitDirectionVertical
