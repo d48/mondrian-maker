@@ -1,30 +1,47 @@
 const canvas = document.querySelector('#canvas')
 const context = canvas.getContext('2d')
+const colors = [
+  // red
+  '#dd0100',
+  // yellow
+  '#fac901',
+  // blue
+  '#225095',
+  // white
+  '#ffffff'
+]
 
-console.log(canvas)
 
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
-context.lineWidth = 10
 
 const rectangles = []
 let splitDirectionVertical = true
 
 canvas.addEventListener('click', onRectangleClick)
 
-function createRectangle(x, y, width, height) {
+function createRectangle(x, y, width, height, color) {
   rectangles.push({
     x,
     y,
     width,
-    height
+    height,
+    color
   })
+}
+
+function getRandomColor() {
+  return colors[Math.floor(Math.random() * colors.length)]
 }
 
 function drawRectangles() {
   rectangles.forEach(rectangle => {
     context.beginPath()
     context.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height)
+    context.fillStyle = rectangle.color
+    context.fill()
+    context.lineWidth = 10
+    context.strokeStyle = 'black'
     context.closePath()
     context.stroke()
   })
@@ -53,24 +70,26 @@ function onRectangleClick(event) {
 }
 
 function splitRectangleAt(rectangle, position) {
-  rectangles.push({
-    x: rectangle.x,
-    y: rectangle.y,
-    width: splitDirectionVertical ? position.x : rectangle.width,
-    height: splitDirectionVertical ? rectangle.height : position.y
-  })
+  createRectangle(
+    rectangle.x,
+    rectangle.y,
+    splitDirectionVertical ? position.x : rectangle.width,
+    splitDirectionVertical ? rectangle.height : position.y,
+    getRandomColor()
+  )
 
-  rectangles.push({
-    x: splitDirectionVertical ? rectangle.x + position.x : rectangle.x,
-    y: splitDirectionVertical ?  rectangle.y : rectangle.y + position.y,
-    width: splitDirectionVertical ? rectangle.width - position.x : rectangle.width,
-    height: splitDirectionVertical ? rectangle.height : rectangle.height - position.y
-  })
+  createRectangle(
+    splitDirectionVertical ? rectangle.x + position.x : rectangle.x,
+    splitDirectionVertical ?  rectangle.y : rectangle.y + position.y,
+    splitDirectionVertical ? rectangle.width - position.x : rectangle.width,
+    splitDirectionVertical ? rectangle.height : rectangle.height - position.y,
+    getRandomColor()
+  )
 
   splitDirectionVertical = !splitDirectionVertical
 
   drawRectangles()
 }
 
-createRectangle(0, 0, window.innerWidth, window.innerHeight)
+createRectangle(0, 0, window.innerWidth, window.innerHeight, colors[3])
 drawRectangles()
