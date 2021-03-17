@@ -1,10 +1,14 @@
 const canvas = document.querySelector('#canvas')
 const context = canvas.getContext('2d')
 const colors = [
+  // white
+  '#ffffff',
   // red
   '#dd0100',
   // yellow
   '#fac901',
+  // white
+  '#ffffff',
   // blue
   '#225095',
   // white
@@ -20,6 +24,17 @@ let splitDirectionVertical = true
 
 canvas.addEventListener('click', onRectangleClick)
 
+function createMondrian(size) {
+  let i = 1 
+  while (i < size) {
+    onRectangleClick({
+      x: getRandomNumber(canvas.width),
+      y: getRandomNumber(canvas.height),
+    })  
+    i++
+  }
+}
+
 function createRectangle(x, y, width, height, color) {
   rectangles.push({
     x,
@@ -30,8 +45,12 @@ function createRectangle(x, y, width, height, color) {
   })
 }
 
+function getRandomNumber(size) {
+  return Math.floor(Math.random() * size)
+}
+
 function getRandomColor() {
-  return colors[Math.floor(Math.random() * colors.length)]
+  return colors[getRandomNumber(colors.length)]
 }
 
 function drawRectangles() {
@@ -48,6 +67,7 @@ function drawRectangles() {
 }
 
 function onRectangleClick(event) {
+  console.log(event)
   const clickedIndex = rectangles.findIndex(rectangle => {
     if (
       event.x > rectangle.x &&
@@ -93,3 +113,4 @@ function splitRectangleAt(rectangle, position) {
 
 createRectangle(0, 0, window.innerWidth, window.innerHeight, colors[3])
 drawRectangles()
+createMondrian(27)
