@@ -24,9 +24,9 @@ let splitDirectionVertical = true
 
 canvas.addEventListener('click', onRectangleClick)
 
-function createMondrian(size) {
+function createMondrian(numRectangles) {
   let i = 1 
-  while (i < size) {
+  while (i < numRectangles) {
     onRectangleClick({
       x: getRandomNumber(canvas.width),
       y: getRandomNumber(canvas.height),
